@@ -42,7 +42,12 @@ deve implementar as funcionalidades apresentadas nos wireframes
 deve ser acessada adequadamente tanto por navegadores desktop quanto mobile
 deve consumir a API do produto
 desenvolvida na forma de uma Single Page Application
-Observações
+```
+### Observações
+```
 Se a aceleração tiver ênfase no backend (Java, Python, C#, Go, PHP, etc) a equipe deve obrigatoriamente implementar a API. A implementação do frontend não é necessária
-Se a aceleração tiver ênfase em frontend (React, Vue, Angular, etc) a equipe deve obrigatoriamente implementar o frontend da aplicação e o backend pode ser substituido por uma aplicação mock. A implementação da API não é necessária, caso o time deseje podem ser utilizados mocks.
+
+Se a aceleração tiver ênfase em frontend (React, Vue, Angular, etc) a equipe deve obrigatoriamente implementar o frontend da aplicação e o backend pode ser substituido por uma aplicação mock. 
+
+A implementação da API não é necessária, caso o time deseje podem ser utilizados mocks.
 ```
