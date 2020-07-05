@@ -1,4 +1,4 @@
-# centraldeerros
+<!-- # centraldeerros
 
 ## Project setup
 ```
@@ -18,7 +18,7 @@ npm run build
 ### Lints and fixes files
 ```
 npm run lint
-```
+``` -->
 ### Central de Erros
 ## Objetivo
 
