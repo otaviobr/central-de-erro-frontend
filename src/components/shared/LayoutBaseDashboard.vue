@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <header app>
-      <span>Bem Vindo, Otávio. Seu token é: #######################.</span>
-      <img
+      <!-- <p>Central de Erros</p> -->
+      <!-- <img
         src="https://cdn.imgbin.com/13/2/13/imgbin-computer-icons-user-profile-material-design-profile-t3uPh00b5QqRAKD0qSh6PQ15E.jpg"
         alt="Logo usuário"
         height="50px"
-      />
+      /> -->
     </header>
     <nav app>
       <slot name="nav"></slot>
@@ -32,7 +32,11 @@ export default class LayoutBaseDashboard extends Vue {}
 .container {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  flex-wrap: wrap;
+  width: 100vw;
+  margin-top: 3vw;
+  background-color: rgb(250, 250, 250);
+  /* border: 1px solid black; */
 }
 
 header {
