@@ -55,7 +55,7 @@
                 <span>To File</span>
               </v-tooltip>
             </v-btn>
-            <v-btn icon @click="Excluir">
+            <v-btn icon @click="Delete">
               <v-tooltip bottom>
                 <template v-slot:activator="{on}">
                   <v-icon v-on="on">mdi-file-remove-outline</v-icon>
@@ -207,7 +207,7 @@ export default class Dashboard extends Vue {
 
   public Detail!: LogDetail;
   public DetailB = new LogDetail(false);
-  public token = ''; 
+  public token = "";
 
   console(item: any) {
     console.log(item);
@@ -236,14 +236,18 @@ export default class Dashboard extends Vue {
     );
   }
 
-  Excluir() {
+  Delete() {
     console.log(this.selected);
-    // LogService.Deletar(this.selected).then(res => {
-    //   console.log(res);
-    //   this.LoadPrimary(true);
-    // }, err => {
-    //   console.log(err);
-    // });
+    LogService.Delete(this.selected).then(
+      (res) => {
+        console.log(res);
+        this.$swal("Sucesso!", "Ação efetuada com sucesso!", "success");
+        this.LoadPrimary(true);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   SearchFor(valor: string) {
@@ -262,6 +266,17 @@ export default class Dashboard extends Vue {
         (res) => {
           // console.log(res);
           this.ListaOcorrencias = res.data;
+          this.ListaOcorrencias.length > 0
+            ? this.$swal(
+                "Busca Efetuada!",
+                "Ação efetuda com sucesso!",
+                "success"
+              )
+            : this.$swal(
+                "Busca Efetuada!",
+                "Nenhum registro encontrado",
+                "info"
+              );
         },
         (err) => {
           console.log(err.response);
@@ -293,7 +308,7 @@ export default class Dashboard extends Vue {
       (res) => {
         this.Detail = new LogDetail(res.data);
         this.dialog = true;
-        this.token = localStorage.token.split('.')[0];
+        this.token = localStorage.token.split(".")[0];
       },
       (err) => {
         console.log(err.response);

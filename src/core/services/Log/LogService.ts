@@ -18,7 +18,7 @@ export default class LogService{
     }
 
     static Delete(logs: any[]){
-        return http.post('log', logs, header);
+        return http.post('log/Delete', JSON.stringify(logs), header);
     }
 
     static SearchFor(env: string, order: string, search: string){

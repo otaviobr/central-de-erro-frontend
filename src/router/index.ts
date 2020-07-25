@@ -10,6 +10,11 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/Login.vue')
   },
   {
+    path: '/redefinir',
+    name: 'Redefinir',
+    component: () => import('@/views/Redefinir.vue')
+  },
+  {
     path: '/cadastro',
     name: 'Cadastro',
     component: () => import('@/views/Cadastro.vue')

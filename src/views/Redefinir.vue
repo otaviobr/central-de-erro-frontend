@@ -22,7 +22,7 @@
         <v-card class="centerAll elevation-12" width="50vw">
           <v-card-title>
             <span class="horizontalCenter">
-              <strong>Login</strong>
+              <strong>Redefinir senha</strong>
             </span>
           </v-card-title>
           <v-card-text>
@@ -39,38 +39,20 @@
                 ></v-text-field>
                 <v-text-field
                   type="password"
-                  v-model="senha"
+                  v-model="password"
                   outlined
                   dense
                   label="Senha"
                   append-icon="mdi-form-textbox-password"
+                  :disabled="!SecondStep"
                   :rules="[rules.senha]"
                 ></v-text-field>
               </v-col>
-              <v-row dense align="center" justify="center">
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{on}">
-                    <a href="/redefinir">
-                      <v-icon v-on="on">mdi-lock-reset</v-icon>
-                    </a>
-                  </template>
-                  <span>Redefinir Senha</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{on}">
-                    <a href="/cadastro">
-                      <v-icon v-on="on">mdi-account-plus</v-icon>
-                    </a>
-                  </template>
-                  <span>Cadastrar-se</span>
-                </v-tooltip>
-              </v-row>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn large @click="Logar()" :disabled="!valid">Login</v-btn>
+            <v-btn large @click="Recuperar()">Recuperar</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -80,12 +62,15 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import AuthenticateService from "@/core/services/UserService/AuthenticateService";
+import UserService from "../core/services/UserService/UserService";
 
 @Component
 export default class Login extends Vue {
-  public email = "otavio1@otavio.com";
-  public senha = "1123";
+  public email = "";
+  public password = "";
+  public id = 0;
+  public SecondStep = false;
+
   public valid = true;
   public rules = {
     email(email: string) {
@@ -102,26 +87,45 @@ export default class Login extends Vue {
     },
   };
 
-  Logar() {
-    new AuthenticateService()
-      .Login(this.email, this.senha)
-      .then((res: any) => {
-        localStorage.clear();
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        localStorage.setItem("token", res.data.token);
-        this.$swal("Sucesso!", "Seja bem vindo!", "success");
-        this.$router.push({ name: "Dashboard" });
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.$swal(
-          "Erro!",
-          err.response
-            ? err.response.data.message
-            : "Ops, tente novamente mais tarde.",
-          "error"
-        );
-      });
+  Recuperar() {
+    //Primeira etapa
+    if (this.password == "") {
+      UserService.FirstStepRecover(this.email).then(
+        (res) => {
+          if (res.data.email == this.email) {
+            console.log(res.data);
+            this.SecondStep = true;
+            this.id = res.data.id;
+            this.$swal(
+              "Encontramos seu cadastro!",
+              "Digite a nova senha.",
+              "info"
+            );
+          }
+        },
+        (err) => {
+          console.log(err.response);
+        }
+      );
+      //Segunda etapa
+    } else {
+      UserService.SecondStepRecover(this.id, this.password).then(
+        (res) => {
+          this.$swal(
+            "Senha recuperada com sucesso! Segue abaixo seus novos dados.",
+            `Email: ${res.data.email} - Senha: ${res.data.password}.`,
+            "info"
+          );
+
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        },
+        (err) => {
+          console.log(err.response);
+        }
+      );
+    }
   }
 }
 </script>
