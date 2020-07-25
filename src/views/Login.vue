@@ -113,6 +113,7 @@ export default class Login extends Vue {
         this.$router.push({ name: "Dashboard" });
       })
       .catch((err: any) => {
+        console.log(err);
         this.$swal(
           "Erro!",
           err.response

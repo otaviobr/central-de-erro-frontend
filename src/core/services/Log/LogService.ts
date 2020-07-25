@@ -1,19 +1,27 @@
 import {http, header} from '../Service';
 
 export default class LogService{
-    static ListarTodos(){
+    static Get(item: any){
+        return http.post('log/Get', item, header);
+    }
+
+    static GetAll(){
         return http.get('log/GetAll', header);
     }
 
-    static Arquivar(logs: any[]){
+    static ToArchive(logs: any[]){
         return http.put('log/ToArchive', logs, header);
     }
 
-    static DesarquivarTodos(){
+    static ToPrimaryAll(){
         return http.post('log/ToPrimaryAll', header);
     }
 
-    static Deletar(logs: any[]){
+    static Delete(logs: any[]){
         return http.post('log', logs, header);
+    }
+
+    static SearchFor(env: string, order: string, search: string){
+        return http.post(`log/SearchFor?env=${env}&order=${order}&search=${search}`, header);
     }
 }
