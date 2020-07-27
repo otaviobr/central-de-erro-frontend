@@ -10,4 +10,12 @@ export default class UserService{
         const rec = {id, password};
         return http.post('user/SecondStepRecover', JSON.stringify(rec), header);
     }
+
+    static NewUser(email: string, password: string){
+        
+        const user = JSON.stringify({email, password});
+        console.log(user);
+
+        return http.post('user/NewUser', user, header);
+    }
 }

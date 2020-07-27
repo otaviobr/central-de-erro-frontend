@@ -1,46 +1,75 @@
 <template>
   <div class="container">
     <div class="login">
+      <h2>Cadastro</h2>
       <div class="inputs">
-        <h2>Cadastro</h2>
-        <input type="text" v-model="email" placeholder="Email" />
-        <input type="password" v-model="senha" placeholder="Senha" />
+        <!-- <input type="text" v-model="email" placeholder="Email" /> -->
+        <!-- <input type="password" v-model="senha" placeholder="Senha" /> -->
+        <v-row dense>
+          <v-col cols="12">
+            <v-col sm="12" md="12" lg="12" xl="12">
+              <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
+            </v-col>
+            <v-col sm="12" md="12" lg="12" xl="12">
+              <v-text-field type="password" v-model="password" label="Senha" outlined dense></v-text-field>
+            </v-col>
+          </v-col>
+        </v-row>
       </div>
       <div class="botao">
-        <button>Cadastrar</button>
+        <v-btn
+          @click="Cadastrar()"
+          :disabled="email == '' || email.length < 9 || password == ''"
+        >Cadastrar</v-btn>
         <!-- <a href>
           <span>Esqueci a senha</span>
-        </a> -->
+        </a>-->
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
-export default class Login extends Vue{
-    public email = '';
-    public senha = '';
+import { Vue, Component } from "vue-property-decorator";
+import UserService from "../core/services/UserService/UserService";
 
-    Cadastrar(email: string, senha: string){
-        if(email != '' && senha != ''){
-            console.log(email, senha);
-        }else{
-            console.log('Algo deu errado');
-        }
-    }
+@Component
+export default class Login extends Vue {
+  public email = "otavio.v.santos@gmail.com";
+  public password = "1234";
+
+  Cadastrar() {
+    UserService.NewUser(this.email, this.password).then(
+      (res) => {
+        if (res.data)
+          this.$swal(
+            "Sucesso!",
+            `Usuário com o email ${res.data.email} criado com sucesso!`,
+            "success"
+          );
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+      },
+      (err) => {
+        this.$swal("Erro!", "Email já cadastrado!", "error");
+      }
+    );
+  }
 }
 </script>
 
 <style scoped>
-button, input {
+button,
+input {
   outline-style: none;
 }
-.container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 20vh;
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20vh;
 }
 
 .login {
@@ -48,54 +77,8 @@ button, input {
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  border: 1px solid black;
   height: auto;
-  padding: 10px;
-}
-
-.inputs {
-  display: flex;
-  flex-direction: column;
-}
-
-.inputs > input {
-  width: 500px;
-  height: 30px;
-}
-
-.inputs > input:nth-child(3) {
-  margin-top: 10px;
-}
-
-.botao {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
-.botao > button {
-  width: 200px;
-  height: 40px;
-  margin-bottom: 10px;
-  border-style: none;
-  color: rgb(0, 0, 0);
-  background-color: rgb(240, 240, 240);
-  border-radius: 7px;
-  cursor: pointer;
-}
-
-.botao > button:hover {
-  background-color: rgb(230, 230, 230);
-  transition: background-color 100ms ease-in;
-}
-
-.botao > button:active {
-  background-color: rgb(220, 220, 220);
-  transition: background-color 10ms ease-in;
-}
-
-.botao > a {
-  text-decoration: none;
-  color: rgb(0, 0, 0);
+  padding: 35px;
+  border: 1px solid black;
 }
 </style>
